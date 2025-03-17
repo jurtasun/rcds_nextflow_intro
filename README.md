@@ -1,6 +1,6 @@
 ## RCDS 2025 - Introduction to Nextflow & nf-core
 
-### Dr. Jesús Urtasun Elizari, ICL Research Computing & Data Science
+### Jesús Urtasun Elizari, ICL Research Computing & Data Science
 
 ICL email address `jurtasun@ic.ac.uk`
 
