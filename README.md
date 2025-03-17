@@ -57,18 +57,6 @@ No prior experience on programming or statistics is required for the attendance 
 - Effective and sustainable code.
 - Single process definition and encapsulation.
 
-### Chapter 7. Hellow nf-test.
-
-- Hellow nf-test.
-- The `hello-nf-test` directory.
-- Test a process for success and matching patterns.
-
-### Chapter 8. Hellow nf-core.
-
-- Hellow nf-core.
-- Standardized pipelines.
-- Components of a nf-core pipeline.
-
 ### Setup
 
 We will be working with Visual Studio Code / Gitpod as main editors.
