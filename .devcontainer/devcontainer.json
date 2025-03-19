@@ -1,0 +1,12 @@
+{
+  "name": "Nextflow Codespace",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "postCreateCommand": "nextflow -version",
+  "remoteUser": "vscode"
+}
+
