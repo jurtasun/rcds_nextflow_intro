@@ -9,4 +9,3 @@
   "postCreateCommand": "nextflow -version",
   "remoteUser": "vscode"
 }
-

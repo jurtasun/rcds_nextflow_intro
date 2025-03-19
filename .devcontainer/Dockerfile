@@ -15,4 +15,3 @@ RUN curl -s https://get.nextflow.io | bash \
 
 # Verify installation
 RUN nextflow -version
-
