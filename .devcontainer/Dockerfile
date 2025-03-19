@@ -9,10 +9,9 @@ RUN apt-get update && apt-get install -y \
 
 # Install Nextflow
 RUN curl -s https://get.nextflow.io | bash \
-    && mv nextflow /usr/local/bin/
-
-# Set Nextflow to be executable
-RUN chmod +x /usr/local/bin/nextflow
+    && mv nextflow /usr/local/bin/ \
+    && chmod +x /usr/local/bin/nextflow \
+    && chown vscode:vscode /usr/local/bin/nextflow
 
 # Verify installation
 RUN nextflow -version
