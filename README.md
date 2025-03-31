@@ -6,15 +6,17 @@ ICL email address `jurtasun@ic.ac.uk`
 
 LMS email address `Jesus.Urtasun@lms.mrc.ac.uk`
 
+<img src="/readme_figures/imperial_ecri.png">
 <img src="/readme_figures/nextflow-logo.png">
-<img src="/readme_figures/seqera-logo.png">
 
 ### Find the content of the course in GitHub:
 [https://github.com/jurtasun/rcds_nextflow_intro](https://github.com/jurtasun/rcds_nextflow_intro)
 
 This course provides an introduction to nextflow and nf-core automated pipelines.
-The topics covered will include basic concepts on bash scripting and linux OS, containers and environments;
-Then we will show how nextflow can be used to build automatized and reproducible workflows for biological and genomics data analysis.
+The topics covered will include basic concepts on bash scripting and linux OS, containers and environments.
+Then we will show how nextflow can be used to build automatized and reproducible workflows for data analysis.
+Even though it is commonly used in biological sciences, such as genomics and bioinformatics, 
+nextflow is a multi-purpose, versatile and powerful scripting language that can be applied to many different fields and tasks.
 
 The course is organized in six chapters, covering topics listed below. All will be followed by a practical session and hands-on coding.
 No prior experience on programming or statistics is required for the attendance of this course, as all topics will be properly introduce as the course progresses.
@@ -59,8 +61,8 @@ No prior experience on programming or statistics is required for the attendance 
 
 ### Setup
 
-We will be working with Visual Studio Code / Gitpod as main editors.
-Although recommended, they do not need to be installed in your local computers, since we will use Codespaces provided by Github, 
+We will be working with the terminal of Linux OS, Visual Studio Code as main editor, and Nextflow.
+Although recommended, they do not need to be installed in your local computer, since we will use `Codespaces` provided by Github, 
 which already implement an interface ready to program an execute the code.
 
 ### Getting Started
@@ -69,7 +71,7 @@ which already implement an interface ready to program an execute the code.
 
 2. Open the terminal and navigate to the unpacked directory to work with the .nf examples.
 
-3. Open a Codespace where we will be using either Visual Studio Code fro the practical sessions.
+3. Open a `Codespace` where we will be using either Visual Studio Code fro the practical sessions.
 
 ### Install and run nextflow locally in your machine
 
