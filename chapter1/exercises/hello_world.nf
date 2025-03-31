@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Use echo to print 'Hello World!' to a file
-process sayHello {
+process say_hello {
 
     output:
         path 'output.txt'
@@ -17,6 +17,6 @@ process sayHello {
 workflow {
 
     // emit a greeting
-    sayHello()
+    say_hello()
 
 }
