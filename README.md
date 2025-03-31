@@ -29,35 +29,35 @@ No prior experience on programming or statistics is required for the attendance 
 - Process, channels, operators.
 - General structure of nextflow pipeline.
 
-### Chapter 2. Containers: docker & singularity.
+### Chapter 2. Channels and operators.
 
-- Containers: docker and singularity.
-- Mounting data into containers.
-- Containers within nextflow.
+- Provide variable inputs via a channel explicitly.
+- Modify the workflow to run on multiple input values.
+- Use an operator to transform the contents of a channel.
 
-### Chapter 3. Genomics with nexftlow.
+### Chapter 3. General workflow.
 
-- Genomics with nexftlow.
-- Example of variant calling.
-- Samtools and GATK analysis.
+- Add steps to make more flexible workflow.
+- Add a batch command-line parameter.
+- Add an output to the collector step.
 
-### Chapter 4. Operators in nextflow.
+### Chapter 4. Modules in nextflow.
 
-- Operators in nextflow.
-- The Samtools software.
-- The GATK variant calling method.
+- Create a directory to store modules.
+- Modularize the process on the workflow.
+- Run and compare with no modularized version.
 
-### Chapter 5. Config nextflow.
+### Chapter 5. Containers.
+
+- The idea of containers: docker and singularity.
+- Use a container 'manually' and pull image.
+- Use containers in Nextflow.
+
+### Chapter 6. Config nextflow.
 
 - Config nextflow.
 - The `hello-config` directory.
 - Symbolic links, containers, submission script.
-
-### Chapter 6. Modules in nextflow.
-
-- Modules in nextflow.
-- Effective and sustainable code.
-- Single process definition and encapsulation.
 
 ### Setup
 
