@@ -331,51 +331,6 @@ indicating that Nextflow has recognized that it has already done this work and s
 You can also see that the work subdirectory hash is the same as in the previous run. 
 Nextflow is literally pointing to the previous execution and saying "I already did that over there."
 
-#### 3.3. Delete older work directories
-
-During the development process, you'll typically run your draft pipelines a large number of times, which can lead to an accumulation of very many files across many subdirectories. Since the subdirectories are named randomly, it is difficult to tell from their names what are older vs. more recent runs.
-
-Nextflow includes a convenient `clean` subcommand that can automatically delete the work subdirectories for past runs that you no longer care about.
-Several options to control what will be deleted, and other useful CLI reference can be found at 
-
-[https://www.nextflow.io/docs/latest/reference/cli.html#clean](https://www.nextflow.io/docs/latest/reference/cli.html#clean)
-
-Here we show you an example that deletes all subdirectories from runs before a given run, specified using its run name. The run name is the machine-generated two-part string shown in square brackets in the `Launching (...)` console output line.
-
-First we use the dry run flag `-n` to check what will be deleted given the command:
-
-```bash
-nextflow clean -before golden_cantor -n
-```
-
-The output should look like this:
-
-```bash
-Would remove /workspaces/training/hello-nextflow/work/a3/7be2fad5e71e5f49998f795677fd68
-```
-
-If you don't see any lines output, you either did not provide a valid run name or there are no past runs to delete. 
-If the output looks as expected and you want to proceed with the deletion, re-run the command with the `-f` flag instead of `-n`:
-
-```bash
-nextflow clean -before golden_cantor -f
-```
-
-You should now see the following
-
-```bash
-Removed /workspaces/training/hello-nextflow/work/a3/7be2fad5e71e5f49998f795677fd68
-```
-
-Deleting work subdirectories from past runs removes them from Nextflow's cache and deletes any outputs that were stored in those directories. 
-That means it breaks Nextflow's ability to resume execution without re-running the corresponding processes.
-
-Be careful saving any outputs that you care about or plan to rely on. If you're using the `publishDir` directive for that purpose, 
-make sure to use the `copy` mode, not the `symlink` mode.
-
-Now that we know how to publish outputs to a specific directory, relaunch a pipeline without repeating steps that were already run in an identical way, 
-and use the nextflow clean command to clean up old work directories, let's learn how to provide a variable input via a command-line parameter and use default values effectively.
-
 ### 4. Add variable input passed on the command line
 
 In its current state, our workflow uses a greeting hardcoded into the process command. 
@@ -449,10 +404,7 @@ Make sure to add the `$` symbol to tell Nextflow this is a variable name that ne
 #### 4.3. Set up a CLI parameter and provide it as input to the process call
 
 Now we need to actually set up a way to provide an input value to the `say_hello()` process call. 
-We could simply hardcode it directly by writing `say_hello('Hello World!')`. However, when we're doing real work with our workflow, 
-we're often going to want to be able to control its inputs from the command line.
-
-Fortunately, Nextflow has a built-in workflow parameter system called `params`, which makes it easy to declare and use CLI parameters. 
+Nextflow has a built-in workflow parameter system called `params`, which makes it easy to declare and use CLI parameters. 
 The general syntax is to declare `params.<parameter_name>` to tell Nextflow to expect a `--<parameter_name>` parameter on the command line.
 
 Here, we want to create a parameter called `--greeting`, so we need to declare `params.greeting` somewhere in the workflow. 
