@@ -284,7 +284,11 @@ And run it again:
 nextflow run hello_channels.nf
 ```
 
-Check we have now three new files in addition to the one we already had in the `results` directory
+Check we have now three new files in addition to the one we already had in the `results` directory.
+Success! Now we can add as many greetings as we like without worrying about output files being overwritten.
+In practice, naming files based on the input data itself is almost always impractical. 
+The better way to generate dynamic filenames is to pass metadata to a process along with the input files.
+The metadata is typically provided via a 'sample sheet' or equivalents. You'll learn how to do that later in your Nextflow training.
 
 ### 3. Use an operator to transform the contents of a channel
 
