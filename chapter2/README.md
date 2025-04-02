@@ -10,7 +10,7 @@ LMS email address `Jesus.Urtasun@lms.mrc.ac.uk`
 
 ### Chapter 2. Hello channels
 
-In Part 1 of this course (Hello World), we showed you how to provide a variable input to a process by providing the input in the process call directly: `sayHello(params.greet)`. That was a deliberately simplified approach. In practice, that approach has major limitations; namely that it only works for very simple cases where we only want to run the process once, on a single value. In most realistic workflow use cases, we want to process multiple values (experimental data for multiple samples, for example), so we need a more sophisticated way to handle inputs.
+In Part 1 of this course (Hello World), we showed you how to provide a variable input to a process by providing the input in the process call directly: `say_hello(params.greet)`. That was a deliberately simplified approach. In practice, that approach has major limitations; namely that it only works for very simple cases where we only want to run the process once, on a single value. In most realistic workflow use cases, we want to process multiple values (experimental data for multiple samples, for example), so we need a more sophisticated way to handle inputs.
 
 That is what Nextflow **channels** are for. Channels are queues designed to handle inputs efficiently and shuttle them from one step to another in multi-step workflows, while providing built-in parallelism and many additional benefits.
 
@@ -39,7 +39,7 @@ Now let's put together the following syntax.
 #!/usr/bin/env nextflow
 
 // Use echo to print 'Hello World!' to a file
-process sayHello {
+process say_hello {
 
     publishDir 'results', mode: 'copy'
 
@@ -63,7 +63,7 @@ params.greeting = 'Hola mundo!'
 workflow {
 
     // emit a greeting
-    sayHello(params.greeting)
+    say_hello(params.greeting)
 
 }
 ```
@@ -78,7 +78,7 @@ As previously, you will find the output file named `output.txt` in the `results`
 
 ### 1. Provide variable inputs with a channel
 
-We are going to create a **channel** to pass the variable input to the `sayHello()` process instead of relying on the implicit handling, which has certain limitations.
+We are going to create a **channel** to pass the variable input to the `say_hello()` process instead of relying on the implicit handling, which has certain limitations.
 
 #### 1.1. Create an input channel
 
@@ -92,7 +92,7 @@ and loads the string 'Hello Channels!' to use as the greeting value. In the work
 workflow {
 
     // emit a greeting
-    sayHello(params.greeting)
+    say_hello(params.greeting)
 
 }
 ```
@@ -105,7 +105,7 @@ workflow {
     greeting_ch = Channel.of('Hello Channels!')
 
     // emit a greeting
-    sayHello(params.greeting)
+    say_hello(params.greeting)
 
 }
 ```
@@ -114,7 +114,7 @@ This is not yet functional since we haven't yet switched the input to the proces
 
 #### 1.2. Add the channel as input to the process call
 
-Now we need to actually plug our newly created channel into the sayHello() process call, replacing the CLI parameter which we were providing directly before. 
+Now we need to actually plug our newly created channel into the say_hello() process call, replacing the CLI parameter which we were providing directly before. 
 In the workflow block, make the following code change:
 
 *Before:*
@@ -125,7 +125,7 @@ workflow {
     greeting_ch = Channel.of('Hello Channels!')
 
     // emit a greeting
-    sayHello(params.greeting)
+    say_hello(params.greeting)
 }
 ```
 
@@ -137,12 +137,12 @@ workflow {
     greeting_ch = Channel.of('Hello Channels!')
 
     // emit a greeting
-    sayHello(greeting_ch)
+    say_hello(greeting_ch)
 }
 ```
 
-This tells Nextflow to run the `sayHello` process on the contents of the `greeting_ch` channel.
-Now our workflow is properly functional; it is the explicit equivalent of writing `sayHello('Hello Channels!')`.
+This tells Nextflow to run the `say_hello` process on the contents of the `greeting_ch` channel.
+Now our workflow is properly functional; it is the explicit equivalent of writing `say_hello('Hello Channels!')`.
 
 #### 1.3. Run the workflow command again
 
@@ -191,7 +191,7 @@ It certainly seems to run just fine:
 Launching `hello-channels.nf` [suspicious_lamport] DSL2 - revision: 778deadaea
 
 executor >  local (3)
-[cd/77a81f] sayHello (3) | 3 of 3 ✔
+[cd/77a81f] say_hello (3) | 3 of 3 ✔
 ```
 However... This seems to indicate that '3 of 3' calls were made for the process, which is encouraging, but this only shows us a single run of the process, with one subdirectory path `(cd/77a81f)`. What's going on?
 
@@ -208,9 +208,9 @@ This time we see all three process runs and their associated work subdirectories
 ```bash
 N E X T F L O W  ~  version 24.10.0
 Launching `hello-channels.nf` [pensive_poitras] DSL2 - revision: 778deadaea
-[76/f61695] Submitted process > sayHello (1)
-[6e/d12e35] Submitted process > sayHello (3)
-[c1/097679] Submitted process > sayHello (2)
+[76/f61695] Submitted process > say_hello (1)
+[6e/d12e35] Submitted process > say_hello (3)
+[c1/097679] Submitted process > say_hello (2)
 ```
 
 That's much better; at least for a simple workflow. For a complex workflow, or a large number of inputs, having the full list output to the terminal might get a bit overwhelming, so you might not choose to use -ansi-log false in those cases.
@@ -221,7 +221,7 @@ That being said, we have another problem. If you look in the results directory, 
 What's up with that? Shouldn't we be expecting a separate file per input greeting, so three files in all? Did all three greetings go into a single file?
 You can check the contents of `output.txt`; you will find only one of the three, containing one of the three greetings we provided.
 
-You may recall that we hardcoded the output file name for the `sayHello` process, so all three calls produced a file called `output.txt`. 
+You may recall that we hardcoded the output file name for the `say_hello` process, so all three calls produced a file called `output.txt`. 
 You can check the work subdirectories for each of the three processes; each of them contains a file called output.txt as expected.
 
 As long as the output files stay there, isolated from the other processes, that is okay. 
@@ -239,7 +239,7 @@ In the process block, make the following code changes:
 
 *Before:*
 ```nextflow
-process sayHello {
+process say_hello {
 
     publishDir 'results', mode: 'copy'
 
@@ -258,7 +258,7 @@ process sayHello {
 
 *After:*
 ```nextflow
-process sayHello {
+process say_hello {
 
     publishDir 'results', mode: 'copy'
 
@@ -288,14 +288,352 @@ Check we have now three new files in addition to the one we already had in the `
 Success! Now we can add as many greetings as we like without worrying about output files being overwritten.
 In practice, naming files based on the input data itself is almost always impractical. 
 The better way to generate dynamic filenames is to pass metadata to a process along with the input files.
-The metadata is typically provided via a 'sample sheet' or equivalents. You'll learn how to do that later in your Nextflow training.
+The metadata is typically provided via a 'sample sheet' or equivalents. You'll learn how to do that later in next chapter.
 
 ### 3. Use an operator to transform the contents of a channel
 
 In Nextflow, operators allow us to transform the contents of a channel. We just showed you how to handle multiple input elements that were hardcoded directly in the channel factory. What if we wanted to provide those multiple inputs in a different form?
 
-For example, imagine we set up an input variable containing an array of elements like this: `greetings_array = ['Hello','Bonjour','Holà']`. Can we load that into our output channel and expect it to work? Let's find out. 
+For example, imagine we set up an input variable containing an array of elements like this: `greetings_array = ['Hello','Bonjour','Hola']`. Can we load that into our output channel and expect it to work? Let's find out. 
+
+#### 3.1. Provide an array of values as input to the channel
+
+We will now pass an array of values as input, instead of a single value.
+
+First, let's take the `greetings_array` variable we just imagined and make it a reality by adding it to the workflow block:
+
+*Before:*
+```nextflow
+workflow {
+
+    // create a channel for inputs
+    greeting_ch = Channel.of('Hello','Bonjour','Hola')
+```
+
+*After:*
+```nextflow
+workflow {
+
+    // declare an array of input greetings
+    greetings_array = ['Hello','Bonjour','Hola']
+
+    // create a channel for inputs
+    greeting_ch = Channel.of('Hello','Bonjour','Hola')
+```
+
+Second, set array of greetings as the input to the channel factory We're going to replace the values 
+`'Hello','Bonjour','Hola'` currently hardcoded in the channel factory with the `greetings_array` we just created.
+
+In the workflow block, make the following change:
+
+*Before:*
+```nextflow
+    // create a channel for inputs
+    greeting_ch = Channel.of('Hello','Bonjour','Hola')
+```
+
+*After:*
+```nextflow
+    // create a channel for inputs
+    greeting_ch = Channel.of(greetings_array)
+```
+
+Run it again:
+
+```bash
+nextflow run hello_channels.nf
+```
+
+This time, Nextflow throws an error that starts like this:
+
+```bash
+ N E X T F L O W   ~  version 24.10.0
+
+Launching `hello-channels.nf` [friendly_koch] DSL2 - revision: 97256837a7
+
+executor >  local (1)
+[22/57e015] say_hello (1) | 0 of 1
+ERROR ~ Error executing process > 'say_hello (1)'
+
+Caused by:
+  Missing output file(s) `[Hello, Bonjour, Hola]-output.txt` expected by process `say_hello (1)`
+```
+
+It looks like Nextflow tried to run a single process call, using `[Hello, Bonjour, Hola]` as a string value, 
+instead of using the three strings in the array as separate values. Let's now get Nextflow to unpack the array and load the individual strings into the channel.
+
+#### 3.2. Use an operator to transform channel contents¶
+
+This is where **operators** come in.
+
+If you skim through the list of operators [https://www.nextflow.io/docs/latest/reference/operator.html](https://www.nextflow.io/docs/latest/reference/operator.html) in the Nextflow documentation, you'll find `flatten()`, which does exactly what we need: unpack the contents of an array and emits them as individual items.
+
+Add the `flatten()` operator. To apply the `flatten()` operator to our input channel, we append it to the channel factory declaration.
+
+*Before:*
+```nextflow
+    // create a channel for inputs
+    greeting_ch = Channel.of(greetings_array)
+```
+
+*After:*
+```nextflow
+    // create a channel for inputs
+    greeting_ch = Channel.of(greetings_array)
+                         .flatten()
+```
+
+Here we added the operator on the next line for readability, but you can add operators on the same line as the channel factory if you prefer, like this: `greeting_ch = Channel.of(greetings_array).flatten()`
+
+We could run this right away to test if it works, but while we're at it, we're also going to add a couple of `view()` operators, 
+which allow us to inspect the contents of a channel. You can think of `view()` as a debugging tool, like a `print()` statement in Python, or its equivalent in other languages.
+
+In the workflow block, make the following code change:
+
+*Before:*
+```nextflow
+    // create a channel for inputs
+    greeting_ch = Channel.of(greetings_array)
+                         .flatten()
+```
+
+*After:*
+```nextflow
+    // create a channel for inputs
+    greeting_ch = Channel.of(greetings_array)
+                         .view { greeting -> "Before flatten: $greeting" }
+                         .flatten()
+                         .view { greeting -> "After flatten: $greeting" }
+```
+
+We are using an operator *closure* here - the curly brackets. This code executes for each item in the channel. 
+We define a temporary variable for the inner value, here called `greeting` (it could be anything). This variable is only used within the scope of that closure. 
+In this example, `$greeting` represents each individual item loaded in a channel.
+
+As a note, in some pipelines you may see a special variable called `$it` used inside operator closures. This is an implicit variable that allows a short-hand access to the inner variable, without needing to define it with a `->`.
+
+We prefer to be explicit to aid code clarity, as such the `$it` syntax is discouraged and will slowly be phased out of the Nextflow language.
+
+Finally, run it again:
+
+```bash
+nextflow run hello_channels.nf
+```
+
+This time it works AND gives us the additional insight into what the contents of the channel look like before and after we run the `flatten()` operator:
+
+```bash
+ N E X T F L O W   ~  version 24.10.0
+
+Launching `hello-channels.nf` [tiny_elion] DSL2 - revision: 1d834f23d2
+
+executor >  local (3)
+[8e/bb08f3] say_hello (2) | 3 of 3 ✔
+Before flatten: [Hello, Bonjour, Hola]
+After flatten: Hello
+After flatten: Bonjour
+After flatten: Hola
+```
+
+You see that we get a single `Before flatten`: statement because at that point the channel contains one item, the original array. 
+Then we get three separate `After flatten`: statements, one for each greeting, which are now individual items in the channel.
+
+You know how to use an operator like `flatten()` to transform the contents of a channel, and how to use the `view()` operator to inspect channel contents before and after applying an operator. Learn how to make the workflow take a file as its source of input values.
 
 ### 4. Use an operator to parse input values from a csv file
 
 It's often the case that, when we want to run on multiple inputs, the input values are contained in a file. As an example, we prepared a CSV file called `greetings.csv` containing several greetings, one on each line (like a column of data).
+
+```text
+Hello
+Bonjour
+Hola
+```
+
+So now we need to modify our workflow to read in the values from a file like that.
+
+#### 4.1. Modify the script to expect a CSV file as the source of greetings
+
+To get started, we're going to need to make two key changes to the script:
+
+- Switch the input parameter to point to the CSV file
+- Switch to a channel factory designed to handle a file
+
+First, remember the `params.greeting` parameter we set up in Part 1? We're going to update it to point to the CSV file containing our greetings.
+
+In the workflow block, make the following code change:
+
+*Before:*
+```nextflow
+    // create a channel for inputs
+    greeting_ch = Channel.of(greetings_array)
+                         .flatten()
+```
+
+*After:*
+```nextflow
+    // create a channel for inputs from a CSV file
+    greeting_ch = Channel.fromPath(params.greeting)
+```
+
+Then switch to a channel factory designed to handle a file. Since we now want to use a file instead of simple strings as the input, we can't use the `Channel.of()` channel factory from before. We need to switch to using a new channel factory, `Channel.fromPath()`, which has some built-in functionality for handling file paths.
+
+In the workflow block, make the following code change:
+
+Finally, run it again:
+
+```bash
+nextflow run hello_channels.nf
+```
+
+Here's the start of the console output and error message:
+
+```bash
+ N E X T F L O W   ~  version 24.10.0
+
+Launching `hello-channels.nf` [adoring_bhabha] DSL2 - revision: 8ce25edc39
+
+[-        ] say_hello | 0 of 1
+ERROR ~ Error executing process > 'say_hello (1)'
+
+Caused by:
+  File `/workspaces/training/hello-nextflow/data/greetings.csv-output.txt` is outside the scope of the process work directory: /workspaces/training/hello-nextflow/work/e3/c459b3c8f4029094cc778c89a4393d
+
+
+Command executed:
+
+  echo '/workspaces/training/hello-nextflow/data/greetings.csv' > '/workspaces/training/hello-nextflow/data/greetings.
+```
+
+The `Command executed:` bit (lines 13-15) is especially helpful here.
+
+This may look a little bit familiar. It looks like Nextflow tried to run a single process call using the file path itself as a string value. So it has resolved the file path correctly, but it didn't actually parse its contents, which is what we wanted.
+
+To get Nextflow to open the file and load its contents into the channel, we will need another operator.
+
+#### 4.2. Use the `splitCsv()` operator to parse the file
+
+Looking through the list of operators again, we find splitCsv(), which is designed to parse and split CSV-formatted text.
+
+To apply the `splitCsv()` operator, we append it to the channel factory line like previously.
+
+In the workflow block, make the following code change:
+
+*Before:*
+```nextflow
+// create a channel for inputs from a CSV file
+greeting_ch = Channel.fromPath(params.greeting)
+```
+
+*After:*
+```nextflow
+// create a channel for inputs from a CSV file
+greeting_ch = Channel.fromPath(params.greeting)
+                     .view { csv -> "Before splitCsv: $csv" }
+                     .splitCsv()
+                     .view { csv -> "After splitCsv: $csv" }
+```
+we also include before/after view statements while we're at it.
+
+Finally, run it again:
+
+```bash
+nextflow run hello_channels.nf
+```
+
+Here's the start of the console output and error message:
+
+```bash
+ N E X T F L O W   ~  version 24.10.0
+
+Launching `hello-channels.nf` [stoic_ride] DSL2 - revision: a0e5de507e
+
+executor >  local (3)
+[42/8fea64] say_hello (1) | 0 of 3
+Before splitCsv: /workspaces/training/hello-nextflow/greetings.csv
+After splitCsv: [Hello]
+After splitCsv: [Bonjour]
+After splitCsv: [Hola]
+ERROR ~ Error executing process > 'say_hello (2)'
+
+Caused by:
+  Missing output file(s) `[Bonjour]-output.txt` expected by process `say_hello (2)`
+
+
+Command executed:
+
+  echo '[Bonjour]' > '[Bonjour]-output.txt'
+```
+
+This time Nextflow has parsed the contents of the file correctly, but it's added brackets around the greetings.
+
+Long story short, `splitCsv()` reads each line into an array, and each comma-separated value in the line becomes an element in the array. 
+So here it gives us three arrays containing one element each. Note that, even if this behavior feels inconvenient right now, it's going to be extremely useful later when we deal with input files with multiple columns of data.
+
+We could solve this by using `flatten()`, which you already know. However, there's another operator called `map()` that's more appropriate to use here and is really useful to know; it pops up a lot in Nextflow pipelines.
+
+#### 4.3. Use the `map()` operator to extract the greetings
+
+The `map()` operator is a very handy little tool that allows us to do all kinds of mappings to the contents of a channel.
+In this case, we're going to use it to extract that one element that we want from each line of our file. This is what the syntax looks like:
+
+```nextflow
+.map { item -> item[0] }
+```
+This means that for each element in the channel, take the first of any items it contains'. So let's apply that to our CSV parsing.
+
+In the workflow block, make the following code change:
+
+*Before:*
+```nextflow
+// create a channel for inputs from a CSV file
+greeting_ch = Channel.fromPath(params.greeting)
+                     .view { csv -> "Before splitCsv: $csv" }
+                     .splitCsv()
+                     .view { csv -> "After splitCsv: $csv" }
+```
+
+*After:*
+```nextflow
+// create a channel for inputs from a CSV file
+greeting_ch = Channel.fromPath(params.greeting)
+                     .view { csv -> "Before splitCsv: $csv" }
+                     .splitCsv()
+                     .view { csv -> "After splitCsv: $csv" }
+                     .map { item -> item[0] }
+                     .view { csv -> "After map: $csv" }
+```
+Once again we include another `view()` call to confirm that the operator does what we expect.
+
+Run it again:
+
+```bash
+nextflow run hello_channels.nf
+```
+
+This time it should run without error.
+
+```bash
+ N E X T F L O W   ~  version 24.10.0
+
+Launching `hello-channels.nf` [tiny_heisenberg] DSL2 - revision: 845b471427
+
+executor >  local (3)
+[1a/1d19ab] say_hello (2) | 3 of 3 ✔
+Before splitCsv: /workspaces/training/hello-nextflow/greetings.csv
+After splitCsv: [Hello]
+After splitCsv: [Bonjour]
+After splitCsv: [Hola]
+After map: Hello
+After map: Bonjour
+After map: Hola
+```
+
+Looking at the output of the view() statements, we see the following:
+
+- A single `Before splitCsv`: statement: at that point the channel contains one item, the original file path.
+- Three separate `After splitCsv`: statements: one for each greeting, but each is contained within an array that corresponds to that line in the file.
+- Three separate `After map`: statements: one for each greeting, which are now individual elements in the channel.
+You can also look at the output files to verify that each greeting was correctly extracted and processed through the workflow.
+
+We've achieved the same result as previously, but now we have a lot more flexibility to add more elements to the channel of greetings we want to process by modifying an input file, without modifying any code.

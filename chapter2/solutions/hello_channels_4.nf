@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Use echo to print 'Hello World!' to a file
-process sayHello {
+process say_hello {
 
     publishDir 'results', mode: 'copy'
 
@@ -23,7 +23,7 @@ params.greeting = 'greetings.csv'
 // Workflow
 workflow {
 
-    greetings_array = ['Hello','Bonjour','Holà']
+    greetings_array = ['Hello','Bonjour','Hola']
 
     // create a channel for inputs from a CSV file
     greeting_ch = Channel.fromPath(params.greeting)
@@ -34,6 +34,6 @@ workflow {
                         .view { "After map: $it" }
 
     // emit a greeting
-    sayHello(greeting_ch)
+    say_hello(greeting_ch)
     
 }

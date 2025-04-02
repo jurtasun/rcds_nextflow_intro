@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Use echo to print 'Hello World!' to a file
-process sayHello {
+process say_hello {
 
     publishDir 'results', mode: 'copy'
 
@@ -19,15 +19,15 @@ process sayHello {
 }
 
 // Pipeline parameters
-params.greeting = 'Holà mundo!'
+params.greeting = 'Hola mundo!'
 
 // Workflow
 workflow {
 
     // create a channel for inputs
-    greeting_ch = Channel.of('Hello','Bonjour','Holà')
+    greeting_ch = Channel.of('Hello','Bonjour','Hola')
 
     // emit a greeting
-    sayHello(greeting_ch)
+    say_hello(greeting_ch)
     
 }
