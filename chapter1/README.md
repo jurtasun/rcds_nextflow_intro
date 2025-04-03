@@ -161,7 +161,7 @@ You console output should look something like this:
 ```bash
  N E X T F L O W   ~  version 24.10.0
 
-Launching `exercises/hello_world.nf` [voluminous_gauss] DSL2 - revision: 060e42a3e2
+Launching `hello_world.nf` [voluminous_gauss] DSL2 - revision: 060e42a3e2
 
 executor >  local (1)
 [ca/e2bae8] say_hello | 1 of 1 ✔
@@ -281,7 +281,7 @@ The log output should look very similar:
 ```bash
  N E X T F L O W   ~  version 24.10.0
 
-Launching `exercises/hello_world.nf` [scruffy_lamarck] DSL2 - revision: b91d39aaa6
+Launching `hello_world.nf` [scruffy_lamarck] DSL2 - revision: b91d39aaa6
 
 executor >  local (1)
 [fd/04e105] say_hello | 1 of 1 ✔
@@ -312,7 +312,7 @@ The output should look again familiar:
 ```bash
  N E X T F L O W   ~  version 24.10.0
 
-Launching `hello-world.nf` [golden_cantor] DSL2 - revision: 35bd3425e5
+Launching `hello_world.nf` [golden_cantor] DSL2 - revision: 35bd3425e5
 
 [fd/04e105] say_hello | 1 of 1, cached: 1 ✔
 ```
@@ -420,7 +420,7 @@ This tells Nextflow to run the `say_hello` process on the value provided through
 Let's run our modified script
 
 ```bash
-nextflow run hello-world.nf --greeting 'Bonjour le monde!'
+nextflow run hello_world.nf --greeting 'Bonjour le monde!'
 ```
 
 If we made all three edits correctly, we should get another successful execution:
@@ -428,7 +428,7 @@ If we made all three edits correctly, we should get another successful execution
 ```bash
  N E X T F L O W   ~  version 24.10.0
 
-Launching `hello-world.nf` [elated_lavoisier] DSL2 - revision: 7c031b42ea
+Launching `hello_world.nf` [elated_lavoisier] DSL2 - revision: 7c031b42ea
 
 executor >  local (1)
 [4b/654319] say_hello | 1 of 1 ✔
