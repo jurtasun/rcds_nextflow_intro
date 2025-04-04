@@ -6,9 +6,10 @@ ICL email address `jurtasun@ic.ac.uk`
 
 LMS email address `Jesus.Urtasun@lms.mrc.ac.uk`
 
+<img src="/readme_figures/imperial_ecri.png">
 <img src="/readme_figures/nextflow-logo.png">
 
-### Chapter 2. Hello channels
+### Chapter 2. Channels and operators
 
 We have seen how to provide a variable input to a process by providing the input in the process call directly: `say_hello(params.greet)`. 
 In practice, that approach has major limitations; namely that it only works for very simple cases where we only want to run the process once, on a single value. 

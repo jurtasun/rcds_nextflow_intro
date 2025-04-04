@@ -6,6 +6,7 @@ ICL email address `jurtasun@ic.ac.uk`
 
 LMS email address `Jesus.Urtasun@lms.mrc.ac.uk`
 
+<img src="/readme_figures/imperial_ecri.png">
 <img src="/readme_figures/nextflow-logo.png">
 
 ### Chapter 1. Hello world with nextflow
@@ -25,7 +26,7 @@ Write the following command in your terminal:
 echo 'Hello World!'
 ```
 
-We can modify this command such that the message is stored in in a file with the pipe `>` character, rather than printed on screen.
+We can modify this command such that the message is stored in in a file with the `>` character, rather than printed on screen.
 
 ```bash
 echo 'Hello World!' > output.txt
@@ -368,7 +369,7 @@ Now the `greeting` variable is prefixed by val to tell Nextflow it's a value ent
 
 #### 4.2. Edit the process command to use the input variable
 
-Now let's edit the process `script` section to use the input variable, istead of the original hardcoded value. 
+Now let's edit the process `script` section to use the input variable, instead of the original hardcoded value. 
 In the process block, make the following code change:
 
 *Before:*

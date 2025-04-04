@@ -26,13 +26,13 @@ No prior experience on programming or statistics is required for the attendance 
 ### Chapter 1. Hello world with nextflow.
 
 - Hello world with nexftlow.
-- Process, channels, operators.
+- Processes and workflow.
 - General structure of nextflow pipeline.
 
 ### Chapter 2. Channels and operators.
 
 - Provide variable inputs via a channel explicitly.
-- Modify the workflow to run on multiple input values.
+- Adapt workflow to run on multiple input values.
 - Use an operator to transform the contents of a channel.
 
 ### Chapter 3. General workflow.
@@ -41,7 +41,7 @@ No prior experience on programming or statistics is required for the attendance 
 - Add a batch command-line parameter.
 - Add an output to the collector step.
 
-### Chapter 4. Modules in nextflow.
+### Chapter 4. Modularization.
 
 - Create a directory to store modules.
 - Modularize the process on the workflow.

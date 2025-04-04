@@ -6,6 +6,7 @@ ICL email address `jurtasun@ic.ac.uk`
 
 LMS email address `Jesus.Urtasun@lms.mrc.ac.uk`
 
+<img src="/readme_figures/imperial_ecri.png">
 <img src="/readme_figures/nextflow-logo.png">
 
 ### Chapter 5. Hello containers

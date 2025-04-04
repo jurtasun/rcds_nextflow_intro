@@ -6,9 +6,10 @@ ICL email address `jurtasun@ic.ac.uk`
 
 LMS email address `Jesus.Urtasun@lms.mrc.ac.uk`
 
+<img src="/readme_figures/imperial_ecri.png">
 <img src="/readme_figures/nextflow-logo.png">
 
-### Chapter 3. Hello worlflow
+### Chapter 3. General worlflow
 
 Most real-world workflows involve more than one step. In this training module, you'll learn how to connect processes together in a multi-step workflow. This will teach you the Nextflow way of achieving the following:
 
@@ -24,7 +25,7 @@ To demonstrate, we will continue building on the domain-agnostic Hello World exa
 3. Add a parameter to name the final output file and pass that as a secondary input to the collection step.
 4. Make the collection step also output a simple statistic about what was processed.
 
-### 0. Warmup: Run `hello-workflow.nf`
+### Warmup: Run `hello-workflow.nf`
 
 We're going to use the workflow script `hello-workflow.nf` as a starting point. It is equivalent to the script produced by working through Part 2 of this training course. Just to make sure everything is working, run the script once before making any changes:
 
