@@ -15,8 +15,6 @@ In Parts 1-4 of this training course, you learned how to use the basic building 
 
 That is all very tedious and annoying, so we're going to show you how to use **containers** to solve this problem much more conveniently. A **container** is a lightweight, standalone, executable unit of software created from a container **image** that includes everything needed to run an application including code, system libraries and settings.
 
-### 0. Warmup: Run hello-containers.nf
-
 We're going to use the workflow script `hello-containers.nf` as a starting point for the second section. It is equivalent to the script produced by working through Part 4 of this training course. Just to make sure everything is working, run the script once before making any changes:
 
 ```bash

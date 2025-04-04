@@ -17,8 +17,6 @@ The example typically consists of printing the phrase "Hello, World!" to the out
 In this first part of the Hello Nextflow training course, we ease into the topic with a very simple domain-agnostic Hello World example, 
 which we'll progressively build up to demonstrate the usage of foundational Nextflow logic and components.
 
-### Warmup: Check that Docker is enabled and run the Hello Config workflow
-
 Let's start with a quick check. There is a `nextflow.config` file in the current directory that contains the line `docker.enabled = <setting>`, where `<setting>` is either `true` or `false` depending on whether or not you've worked through chapter 5 of this course in the same environment. If it is set to `true`, you don't need to do anything. If it is set to `false`, switch it to `true` now.
 
 ### 1. Determine what software packaging technology to use

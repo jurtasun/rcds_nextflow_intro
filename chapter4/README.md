@@ -15,8 +15,6 @@ This section covers how to organize your workflow code to make development and m
 
 When we started developing our workflow, we put everything in one single code file. Putting processes into individual modules makes it possible to reuse process definitions in multiple workflows without producing multiple copies of the code. This makes the code more shareable, flexible and maintainable.
 
-### Warmup: Run `hello-modules.nf`
-
 We're going to use the workflow script `hello-modules.nf` as a starting point. It is equivalent to the script produced by working through Part 3 of this training course. Just to make sure everything is working, run the script once before making any changes:
 
 ### 1. Create a directory to store modules

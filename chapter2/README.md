@@ -11,13 +11,8 @@ LMS email address `Jesus.Urtasun@lms.mrc.ac.uk`
 
 ### Chapter 2. Channels and operators
 
-We have seen how to provide a variable input to a process by providing the input in the process call directly: `say_hello(params.greet)`. 
-In practice, that approach has major limitations; namely that it only works for very simple cases where we only want to run the process once, on a single value. 
-In most realistic cases, we want to process multiple values (e.g., experimental data for multiple samples), so we need a more sophisticated way to handle inputs.
-
+In most realistic cases, we want to process multiple values, like experimental data for multiple samples, so we need a more sophisticated way to handle inputs.
 That is what Nextflow **channels** are for. Channels are queues designed to handle inputs efficiently and shuttle them from one step to another, and work in multi-step workflows. In this part of the course, we will learn how to use a channel to handle multiple inputs from a variety of different sources. You will also learn to use **operators** to transform and manipulate channel contents as needed.
-
-### Warmup: Run `hello_channels.nf` script
 
 Write the following code which reproduces the exercise we did in the last chapter.
 Let's begin by creating a file called `hellow_channels.nf`.
@@ -156,7 +151,7 @@ You can check the results directory to satisfy yourself that the outcome is stil
 So far we're just progressively tweaking the code to increase the flexibility of our workflow, while achieving the same end result.
 This may seem like we're writing more code for no real benefit, but the value will become clear as soon as we start handling more inputs.
 
-### 2. Modify workflow to run on multiple input values
+### 2. Adapt workflow to accept multiple inputs
 
 Workflows typically run on batches of inputs that are meant to be processed in bulk, so we want to upgrade the workflow to accept multiple input values.
 
@@ -225,7 +220,7 @@ All three calls produced a file called `output.txt`.  If we check the work subdi
 We see then what is the problem. The output files stay there, isolated from the other processes, which is okay. 
 But when the `publishDir` directive copies each of them to the same `results` directory, whichever got copied there first gets overwritten by the next one, and so on.
 
-#### 2.2. Ensure the output file names will be unique
+#### 2.2. Ensure unique output file names
 
 We can continue publishing all the outputs to the same results directory, but we need to ensure they will have unique names. 
 Specifically, we need to modify the first process to generate a file name dynamically so that the final file names will be unique. 
@@ -287,7 +282,7 @@ In practice, naming files based on the input data itself is almost always imprac
 The better way to generate dynamic filenames is to pass metadata to a process along with the input files.
 The metadata is typically provided via a 'sample sheet' or equivalents. You'll learn how to do that later in next chapter.
 
-### 3. Use an operator to transform the contents of a channel
+### 3. Use operators to transform the contents of a channel
 
 In Nextflow, operators allow us to transform the contents of a channel. 
 We just saw how to handle multiple input elements that were hardcoded directly in the channel factory. 
@@ -361,7 +356,7 @@ Caused by:
 It looks like Nextflow tried to run a single process call, using `[Hello, Bonjour, Hola]` as a string value, 
 instead of using the three strings in the array as separate values. Let's now get Nextflow to unpack the array and load the individual strings into the channel.
 
-#### 3.2. Use an operator to transform channel contents
+#### 3.2. Use operator to transform channel contents
 
 This is where **operators** come in.
 
@@ -455,7 +450,7 @@ Hola
 
 So now we need to modify our workflow to read in the values from a file like that.
 
-#### 4.1. Modify the script to expect a file as the source of greetings
+#### 4.1. Take inputs from a file
 
 To get started, we're going to need to make two key changes to the script:
 

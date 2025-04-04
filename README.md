@@ -59,6 +59,11 @@ No prior experience on programming or statistics is required for the attendance 
 - The `hello-config` directory.
 - Symbolic links, containers, submission script.
 
+### Chapter 7. Introduction to `nf-core`.
+
+- Load pipelines from `nf-core`.
+- Run on HPC and parallelizatiion.
+
 ### Setup
 
 We will be working with the terminal of Linux OS, Visual Studio Code as main editor, and Nextflow.

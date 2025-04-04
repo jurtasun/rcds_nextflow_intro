@@ -12,12 +12,9 @@ LMS email address `Jesus.Urtasun@lms.mrc.ac.uk`
 ### Chapter 1. Hello world with nextflow
 
 In this first chapter we will illustrate with h a very basic `Hello World` example, 
-and we will progressively build up to introduce the usage of foundational Nextflow logic and components.
-
-A "Hello, World!" is a minimalist example that is meant to demonstrate the basic syntax and structure of a programming language or software framework.
-The example typically consists of printing the phrase "Hello, World!" to the output device, such as the console or terminal, or writing it to a file.
-
-### Warmup: Hello World on terminal
+and we will progressively build up to introduce the usage of foundational Nextflow logic and components. 
+We will demonstrate the basic syntax and structure of a programming language or software framework.
+The example we will do consists of printing the phrase "Hello, World!" to the output device, such as the console or terminal, or writing it to a file.
 
 Let's demonstrate how to write a simple sentence with a `bash` command directly in the terminal, to show what it does before we wrap it in Nextflow.
 Write the following command in your terminal:
@@ -176,7 +173,7 @@ Congratulations, you just ran your first Nextflow workflow! The most important o
 This tells us that the `say_hello` process was successfully executed once (`1 of 1 ✔`).
 Importantly, this line also tells you where to find the output of the say_hello process call. Let's look at that now.
 
-#### 2.2. Find output and log files in the `work` directory
+#### 2.2. Check output in the `work` directory
 
 When you run Nextflow for the first time in a given directory, 
 it creates a directory called `work` where it will write all files (and any symlinks) generated during the execution.
@@ -235,7 +232,7 @@ The actual output of the `say_hello` process is `output.txt`. Open it and you wi
 
 Let's now learn how to manage the workflow executions conveniently.
 
-### 3. Manage nextflow executions
+### 3. Directives and manage executions
 
 Here we will learn to use the `publishDir` directive to store in an output folder all the main results from your pipeline run, the `resume` feature for when you need to re-launch the same workflow, and how to delete older work directories with `nextflow clean`.
 
@@ -324,7 +321,7 @@ indicating that Nextflow has recognized that it has already done this work and s
 You can also see that the work subdirectory hash is the same as in the previous run. 
 Nextflow is literally pointing to the previous execution and saying "I already did that over there."
 
-### 4. Add variable input passed on the command line
+### 4. Work on multiple inputs
 
 In its current state, our workflow uses a greeting hardcoded into the process command. 
 To add some flexibility we can use an input variable, so we can more easily change the greeting at runtime. 

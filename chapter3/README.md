@@ -11,21 +11,19 @@ LMS email address `Jesus.Urtasun@lms.mrc.ac.uk`
 
 ### Chapter 3. General worlflow
 
-Most real-world workflows involve more than one step. In this training module, you'll learn how to connect processes together in a multi-step workflow. This will teach you the Nextflow way of achieving the following:
+In this chapter we will learn how to connect processes together in a multi-step workflow, achieving the following:
 
 1. Making data flow from one process to the next
 2. Collecting outputs from multiple process calls into a single process call
 3. Passing more than one input to a process
 3. Handling multiple outputs coming out of a process
 
-To demonstrate, we will continue building on the domain-agnostic Hello World example from Parts 1 and 2. This time, we're going to make the following changes to our workflow to better reflect how people build actual workflows:
+We will now make the following changes to our workflow:
 
 1. Add a second step that converts the greeting to uppercase.
 2. Add a third step that collects all the transformed greetings and writes them into a single file.
 3. Add a parameter to name the final output file and pass that as a secondary input to the collection step.
 4. Make the collection step also output a simple statistic about what was processed.
-
-### Warmup: Run `hello-workflow.nf`
 
 We're going to use the workflow script `hello-workflow.nf` as a starting point. It is equivalent to the script produced by working through Part 2 of this training course. Just to make sure everything is working, run the script once before making any changes:
 
