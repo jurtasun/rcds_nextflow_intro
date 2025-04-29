@@ -42,7 +42,7 @@ nextflow run hello-workflow.nf
 Launching `hello-workflow.nf` [stupefied_sammet] DSL2 - revision: b9e466930b
 
 executor >  local (3)
-[2a/324ce6] sayHello (3) | 3 of 3 ✔
+[2a/324ce6] say_hello (3) | 3 of 3 ✔
 ```
 
 As previously, you will find the output files in the results directory, as specified by the `publishDir` directive.
@@ -53,7 +53,7 @@ We're going to add a step to convert the greeting to uppercase. To that end, we 
 
 - Define the command we're going to use to do the uppercase conversion.
 - Write a new process that wraps the uppercasing command.
-- Call the new process in the workflow block and set it up to take the output of the `sayHello()` process as input.
+- Call the new process in the workflow block and set it up to take the output of the `say_hello()` process as input.
 
 #### 1.1. Define the uppercasing command and test it in the terminal
 
@@ -78,7 +78,7 @@ Add the following process definition to the workflow script:
 
 ```nextflow
 // Convert the greeting to uppercase with text replacement
-process convertToUpper {
+process convert_to_upper {
 
     publishDir 'results', mode: 'copy'
 
@@ -102,32 +102,32 @@ Note that Nextflow will determine the order of operations based on the chaining 
 
 #### 1.2. Add a call to the new process in the workflow block
 
-Now we need to tell Nextflow to actually call the process that we just defined. In the workflow block, add the following call to `convertToUpper()`:
+Now we need to tell Nextflow to actually call the process that we just defined. In the workflow block, add the following call to `convert_to_upper()`:
 
 ```nextflow
 
     // Emit a greeting
-    sayHello(greeting_ch)
+    say_hello(greeting_ch)
 
     // Convert to uppercase
-    convertToUpper()
+    convert_to_upper()
 
 ```
 
-This is not yet functional because we have not specified what should be input to the `convertToUpper()` process.
+This is not yet functional because we have not specified what should be input to the `convert_to_upper()` process.
 
 #### 1.3. Pass the output of the first process to the second process
 
-Now we need to make the output of the `sayHello()` process flow into the `convertToUpper()` process.
+Now we need to make the output of the `say_hello()` process flow into the `convert_to_upper()` process.
 
-Conveniently, Nextflow automatically packages the output of a process into a channel called `<process>.out`. So the output of the `sayHello` process is a channel called `sayHello.out`, which we can plug straight into the call to `convertToUpper()`.
+Conveniently, Nextflow automatically packages the output of a process into a channel called `<process>.out`. So the output of the `say_hello` process is a channel called `say_hello.out`, which we can plug straight into the call to `convert_to_upper()`.
 
 In the workflow block, make the following change in the call to `converToUpper()`:
 
 ```nextflow
 
     // Convert to uppercase
-    convertToUpper(sayHello.out)
+    convert_to_upper(say_hello.out)
 
 ```
 
@@ -147,8 +147,8 @@ You should get the following output
 Launching `hello-workflow.nf` [disturbed_darwin] DSL2 - revision: 4e252c048f
 
 executor >  local (3)
-[79/33b2f0] sayHello (2)       | 3 of 3, cached: 3 ✔
-[b3/d52708] convertToUpper (3) | 3 of 3 ✔
+[79/33b2f0] say_hello (2)       | 3 of 3, cached: 3 ✔
+[b3/d52708] convert_to_upper (3) | 3 of 3 ✔
 ```
 
 Let's have a look inside the work directory of one of the calls to the second process.
@@ -173,7 +173,7 @@ results
 └── UPPER-Holà-output.txt
 ```
 
-Think about how all we did was connect the output of `sayHello` to the input of `convertToUpper` and the two processes could be run in series. Nextflow did the hard work of handling individual input and output files and passing them between the two commands for us.
+Think about how all we did was connect the output of `say_hello` to the input of `convert_to_upper` and the two processes could be run in series. Nextflow did the hard work of handling individual input and output files and passing them between the two commands for us.
 
 This is one of the reasons Nextflow channels are so powerful: they take care of the busywork involved in connecting workflow steps together. 
 Let's now learn how to collect outputs from batched process calls and feed them into a single process.
@@ -202,7 +202,7 @@ Check the content of that file with `less COLLECTED-output.txt`; that is the res
 
 #### 2.2. Create a new process to do the collection step
 
-Let's create a new process and call it `collectGreetings()`. We can start writing it based on the previous one.
+Let's create a new process and call it `collect_greetings()`. We can start writing it based on the previous one.
 
 2.2.1. Write the 'obvious' parts of the process
 
@@ -210,7 +210,7 @@ Add the following process definition to the workflow script:
 
 ```nextflow
 // Collect uppercase greetings into a single output file
-process collectGreetings {
+process collect_greetings {
 
     publishDir 'results', mode: 'copy'
 
@@ -230,7 +230,7 @@ process collectGreetings {
 This is what we can write with confidence based on what you've learned so far. But this is not functional yet.
 We leave out the input definition and the first half of the script command because we need to figure out how to write that.
 
-We need to collect the greetings from all the calls to the `convertToUpper()` process. The channel output from `convertToUpper()` will contain the paths to the individual files containing the uppercased greetings. That amounts to one input slot; let's call it input_files for simplicity.
+We need to collect the greetings from all the calls to the `convert_to_upper()` process. The channel output from `convert_to_upper()` will contain the paths to the individual files containing the uppercased greetings. That amounts to one input slot; let's call it input_files for simplicity.
 
 In the process block, make the following code change:
 
@@ -260,13 +260,13 @@ In the workflow block, make the following code change:
 
 ```nextflow
     // convert the greeting to uppercase
-    convertToUpper(sayHello.out)
+    convert_to_upper(say_hello.out)
 
     // collect all the greetings into one file
-    collectGreetings(convertToUpper.out)
+    collect_greetings(convert_to_upper.out)
 ```
 
-This connects the output of `convertToUpper()` to the input of `collectGreetings()`.
+This connects the output of `convert_to_upper()` to the input of `collect_greetings()`.
 Run the workflow with `-resume`
 
 ```bash
@@ -281,37 +281,37 @@ It runs successfully, including the third step:
 Launching `hello-workflow.nf` [mad_gilbert] DSL2 - revision: 6acfd5e28d
 
 executor >  local (3)
-[79/33b2f0] sayHello (2)         | 3 of 3, cached: 3 ✔
-[99/79394f] convertToUpper (3)   | 3 of 3, cached: 3 ✔
-[47/50fe4a] collectGreetings (1) | 3 of 3 ✔
+[79/33b2f0] say_hello (2)         | 3 of 3, cached: 3 ✔
+[99/79394f] convert_to_upper (3)   | 3 of 3, cached: 3 ✔
+[47/50fe4a] collect_greetings (1) | 3 of 3 ✔
 ```
 
-However, look at the number of calls for `collectGreetings()` on line 8. We were only expecting one, but there are three.
+However, look at the number of calls for `collect_greetings()` on line 8. We were only expecting one, but there are three.
 
 And have a look at the contents of the final output file `COLLECTED-outpu.txt` too. 
 It seems that the collection step was run individually on each greeting, which is NOT what we wanted.
-We need to do something to tell Nextflow explicitly that we want that third step to run on all the elements in the channel output by convertToUpper().
+We need to do something to tell Nextflow explicitly that we want that third step to run on all the elements in the channel output by convert_to_upper().
 
 #### 2.4. Use an operator to collect the greetings into a single input
 
-Let's add the `collect()` operator. This time it's going to look a bit different because we're not adding the operator in the context of a channel factory, but to an output channel. We take the `convertToUpper.out` and append the `collect()` operator, which gives us `convertToUpper.out.collect()`. We can plug that directly into the `collectGreetings()` process call.
+Let's add the `collect()` operator. This time it's going to look a bit different because we're not adding the operator in the context of a channel factory, but to an output channel. We take the `convert_to_upper.out` and append the `collect()` operator, which gives us `convert_to_upper.out.collect()`. We can plug that directly into the `collect_greetings()` process call.
 
 In the workflow block, make the following code change:
 
 ```nextflow
     // collect all the greetings into one file
-    collectGreetings(convertToUpper.out.collect())
+    collect_greetings(convert_to_upper.out.collect())
 ```
 
 Let's also include a couple of `view()` statements to visualize the before and after states of the channel contents.
 
 ```nextflow
     // collect all the greetings into one file
-    collectGreetings(convertToUpper.out.collect())
+    collect_greetings(convert_to_upper.out.collect())
 
     // optional view statements
-    convertToUpper.out.view { greeting -> "Before collect: $greeting" }
-    convertToUpper.out.collect().view { greeting -> "After collect: $greeting" }
+    convert_to_upper.out.view { greeting -> "Before collect: $greeting" }
+    convert_to_upper.out.collect().view { greeting -> "After collect: $greeting" }
 ```
 
 The `view()` statements can go anywhere you want; we put them after the call for readability.
@@ -329,9 +329,9 @@ It runs successfully, although the log output may look a little messier than thi
 
 Launching `hello-workflow.nf` [soggy_franklin] DSL2 - revision: bc8e1b2726
 
-[d6/cdf466] sayHello (1)       | 3 of 3, cached: 3 ✔
-[99/79394f] convertToUpper (2) | 3 of 3, cached: 3 ✔
-[1e/83586c] collectGreetings   | 1 of 1 ✔
+[d6/cdf466] say_hello (1)       | 3 of 3, cached: 3 ✔
+[99/79394f] convert_to_upper (2) | 3 of 3, cached: 3 ✔
+[1e/83586c] collect_greetings   | 1 of 1 ✔
 Before collect: /workspaces/training/hello-nextflow/work/b3/d52708edba8b864024589285cb3445/UPPER-Bonjour-output.txt
 Before collect: /workspaces/training/hello-nextflow/work/99/79394f549e3040dfc2440f69ede1fc/UPPER-Hello-output.txt
 Before collect: /workspaces/training/hello-nextflow/work/aa/56bfe7cf00239dc5badc1d04b60ac4/UPPER-Holà-output.txt
@@ -403,7 +403,7 @@ Now to pass the `batch` parameter to the process, we need to add it in the proce
 
 ```nextflow
     // collect all the greetings into one file
-    collectGreetings(convertToUpper.out.collect(), params.batch)
+    collect_greetings(convert_to_upper.out.collect(), params.batch)
 ```
 
 #### 3.3. Run the workflow
@@ -422,9 +422,9 @@ It runs successfully:
 Launching `hello-workflow.nf` [confident_rutherford] DSL2 - revision: bc58af409c
 
 executor >  local (1)
-[79/33b2f0] sayHello (2)       | 3 of 3, cached: 3 ✔
-[99/79394f] convertToUpper (2) | 3 of 3, cached: 3 ✔
-[b5/f19efe] collectGreetings   | 1 of 1 ✔
+[79/33b2f0] say_hello (2)       | 3 of 3, cached: 3 ✔
+[99/79394f] convert_to_upper (2) | 3 of 3, cached: 3 ✔
+[b5/f19efe] collect_greetings   | 1 of 1 ✔
 ```
 
 And produces the desired output, that we can check with `cat results/COLLECTED-trio-output.txt`.
@@ -437,31 +437,81 @@ When a process produces only one output, it's easy to access it (in the workflow
 For demonstration purposes, let's say we want to count and report the number of greetings that are being collected for a given batch of inputs. To that end, we're going to make the following refinements to the workflow:
 
 - Modify the process to count and output the number of greetings
-- Once the process has run, select the count and report it using view (in the workflow block)
+- Once the process has run, select the count and report it using `view` (in the workflow block)
 
-### 4.1. Modify the process to count and output the number of greetings
+#### 4.1. Modify the process to count and output the number of greetings
 
 This will require two key changes to the process definition: we need a way to count the greetings, then we need to add that count to the `output` block of the process.
 
-4.1.1. Count the number of greetings collected¶
+To count the number of greetings collected, Nextflow lets us add arbitrary code in the `script`: 
+block of the process definition, which comes in really handy for doing things like this.
 
-Conveniently, Nextflow lets us add arbitrary code in the `script`: block of the process definition, which comes in really handy for doing things like this.
+That means we can use the built-in `size()` function to get the number of files in the input_files array. 
+Add the following to the `collect_greetings` process block:
 
-That means we can use the built-in `size()` function to get the number of files in the input_files array.
+```nextflow
+    script:
+        count_greetings = input_files.size()
+    """
+    cat ${input_files} > 'COLLECTED-${batch_name}-output.txt'
+    """
+```
 
-In the `collectGreetings` process block, make the following code change:
+In principle all we need to do is to add the `count_greetings` variable to the `output`: block.
 
-### 4.2. Report the output at the end of the workflow
+However, while we're at it, we're also going to add some `emit`: tags to our output declarations. 
+These will enable us to select the outputs by name instead of having to use positional indices.
+Add the following to the process block:
 
-Now that we have two outputs coming out of the `collectGreetings` process, the `collectGreetings.out` output contains two channels:
+```nextflow
+    output:
+        path "COLLECTED-${batch_name}-output.txt" , emit: outfile
+        val count_greetings , emit: count
+```
 
-`collectGreetings.out.outfile` contains the final output file
-`collectGreetings.out.count` contains the count of greetings
+The `emit`: tags are optional, and we could have added a tag to only one of the outputs. We add them both for clarity.
+
+#### 4.2. Report the output at the end of the workflow
+
+Now that we have two outputs coming out of the `collect_greetings` process, the `collect_greetings.out` output contains two channels:
+
+- `collect_greetings.out.outfile` contains the final output file
+- `collect_greetings.out.count` contains the count of greetings
+
 We could send either or both of these to another process for further work. However, in the interest of wrapping this up, 
 we're just going to use `view()` to demonstrate that we can access and report the count of greetings.
 
-In the workflow block, make the following code change:
+Add the following to the workflow block:
+
+```nextflow
+    // collect all the greetings into one file
+    collect_greetings(convert_to_upper.out.collect(), params.batch)
+
+    // emit a message about the size of the batch
+    collect_greetings.out.count.view { num_greetings -> "There were $num_greetings greetings in this batch" }
+```
+
+We could achieve a similar result with in many different ways, like using the count() operator, 
+but this allows us to show how to handle multiple outputs, which is what we are after now.
 
 ### 4.3. Run the workflow
 
-Let's try running this with the current batch of greetings.
+Let's run for the last time our code with our batch of greetings
+
+```nextflow
+nextflow run hello-workflow.nf -resume --batch trio
+```
+
+```batch
+ N E X T F L O W   ~  version 24.10.0
+
+Launching `hello-workflow.nf` [evil_sinoussi] DSL2 - revision: eeca64cdb1
+
+[d6/cdf466] say_hello (1)       | 3 of 3, cached: 3 ✔
+[99/79394f] convert_to_upper (2) | 3 of 3, cached: 3 ✔
+[9e/1dfda7] collect_greetings   | 1 of 1, cached: 1 ✔
+There were 3 greetings in this batch
+```
+
+Last line shows that we correctly retrieved the count of greetings processed. Feel free to add more greetings to the CSV and see what happens.
+We have earned a long break. In next chapter we will learn how to modularize our code for better maintainability and code efficiency.

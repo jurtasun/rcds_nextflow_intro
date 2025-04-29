@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Use echo to print 'Hello World!' to a file
-process sayHello {
+process say_hello {
 
     publishDir 'results', mode: 'copy'
 
@@ -19,7 +19,7 @@ process sayHello {
 }
 
 // Use a text replacement tool to convert the greeting to uppercase
-process convertToUpper {
+process convert_to_upper {
 
     publishDir 'results', mode: 'copy'
 
@@ -48,9 +48,9 @@ workflow {
                         .map { line -> line[0] }
 
     // emit a greeting
-    sayHello(greeting_ch)
+    say_hello(greeting_ch)
 
     // convert the greeting to uppercase
-    convertToUpper(sayHello.out)
+    convertToUpper(say_hello.out)
     
 }
