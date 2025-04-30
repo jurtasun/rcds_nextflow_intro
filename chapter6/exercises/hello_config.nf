@@ -6,7 +6,7 @@ params.batch = 'test-batch'
 params.character = 'turkey'
 
 // Include modules
-include { sayHello } from './modules/sayHello.nf'
+include { say_hello } from './modules/say_hello.nf'
 include { convertToUpper } from './modules/convertToUpper.nf'
 include { collectGreetings } from './modules/collectGreetings.nf'
 include { cowpy } from './modules/cowpy.nf'
@@ -20,10 +20,10 @@ workflow {
                         .map { line -> line[0] }
 
     // emit a greeting
-    sayHello(greeting_ch)
+    say_hello(greeting_ch)
 
     // convert the greeting to uppercase
-    convertToUpper(sayHello.out)
+    convertToUpper(say_hello.out)
 
     // collect all the greetings into one file
     collectGreetings(convertToUpper.out.collect(), params.batch)
