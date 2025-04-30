@@ -5,9 +5,9 @@ params.greeting = 'greetings.csv'
 params.batch = 'test-batch'
 
 // Include modules
-include { sayHello } from './modules/sayHello.nf'
-include { convertToUpper } from './modules/convertToUpper.nf'
-include { collectGreetings } from './modules/collectGreetings.nf'
+include { say_hello } from './modules/say_hello.nf'
+include { convert_to_upper } from './modules/convert_to_upper.nf'
+include { collect_greetings } from './modules/collect_greetings.nf'
 
 // Workflow
 workflow {
@@ -18,15 +18,15 @@ workflow {
                         .map { line -> line[0] }
 
     // emit a greeting
-    sayHello(greeting_ch)
+    say_hello(greeting_ch)
 
     // convert the greeting to uppercase
-    convertToUpper(sayHello.out)
+    convert_to_upper(say_hello.out)
 
     // collect all the greetings into one file
-    collectGreetings(convertToUpper.out.collect(), params.batch)
+    collect_greetings(convert_to_upper.out.collect(), params.batch)
 
     // emit a message about the size of the batch
-    collectGreetings.out.count.view { "There were $it greetings in this batch" }
+    collect_greetings.out.count.view { "There were $it greetings in this batch" }
     
 }

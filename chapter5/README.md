@@ -31,9 +31,9 @@ This should produce the following output:
 Launching `hello-containers.nf` [tender_becquerel] DSL2 - revision: f7cat8e223
 
 executor >  local (7)
-[bd/4bb541] sayHello (1)         [100%] 3 of 3 ✔
-[85/b627e8] convertToUpper (3)   [100%] 3 of 3 ✔
-[7d/f7961c] collectGreetings     [100%] 1 of 1 ✔
+[bd/4bb541] say_hello (1)         [100%] 3 of 3 ✔
+[85/b627e8] convert_to_upper (3)   [100%] 3 of 3 ✔
+[7d/f7961c] collect_greetings     [100%] 1 of 1 ✔
 ```
 
 As previously, you will find the output files in the `results` directory, specified by the `publishDir` directive.
@@ -289,7 +289,7 @@ Let's now learn how to use containers for the execution of Nextflow processes.
 
 Nextflow has built-in support for running processes inside containers to let you run tools you don't have installed in your compute environment. This means that you can use any container image you like to run your processes, and Nextflow will take care of pulling the image, mounting the data, and running the process inside it.
 
-To demonstrate this, we are going to add a `cowpy` step to the pipeline we've been developing, after the `collectGreetings` step.
+To demonstrate this, we are going to add a `cowpy` step to the pipeline we've been developing, after the `collect_greetings` step.
 
 #### 3.1. Write a cowpy module¶
 
@@ -333,29 +333,29 @@ Import the `cowpy` process into `hello_containers.nf`. Insert the import declara
 
 ```nextflow
 // Include modules
-include { sayHello } from './modules/sayHello.nf'
-include { convertToUpper } from './modules/convertToUpper.nf'
-include { collectGreetings } from './modules/collectGreetings.nf'
+include { say_hello } from './modules/say_hello.nf'
+include { convert_to_upper } from './modules/convert_to_upper.nf'
+include { collect_greetings } from './modules/collect_greetings.nf'
 include { cowpy } from './modules/cowpy.nf'
 
 workflow {
 ```
 
-Let's connect the `cowpy()` process to the output of the `collectGreetings()` process, which as you may recall produces two outputs:
+Let's connect the `cowpy()` process to the output of the `collect_greetings()` process, which as you may recall produces two outputs:
 
-- `collectGreetings.out.outfile` contains the output file
-- `collectGreetings.out.count` contains the count of greetings per batch
+- `collect_greetings.out.outfile` contains the output file
+- `collect_greetings.out.count` contains the count of greetings per batch
 In the workflow block, make the following code change:
 
 ```nextflow
     // collect all the greetings into one file
-    collectGreetings(convertToUpper.out.collect(), params.batch)
+    collect_greetings(convert_to_upper.out.collect(), params.batch)
 
     // emit a message about the size of the batch
-    collectGreetings.out.count.view{ num_greetings -> "There were $num_greetings greetings in this batch" }
+    collect_greetings.out.count.view{ num_greetings -> "There were $num_greetings greetings in this batch" }
 
     // generate ASCII art of the greetings with cowpy
-    cowpy(collectGreetings.out.outfile, params.character)
+    cowpy(collect_greetings.out.outfile, params.character)
 ```
 
 Notice that we include a new CLI parameter, `params.character`, in order to specify which character we want to have say the greetings.
@@ -383,9 +383,9 @@ You should encounter an error
 Launching `hello-containers.nf` [special_lovelace] DSL2 - revision: 028a841db1
 
 executor >  local (1)
-[f6/cc0107] sayHello (1)       | 3 of 3, cached: 3 ✔
-[2c/67a06b] convertToUpper (3) | 3 of 3, cached: 3 ✔
-[1a/bc5901] collectGreetings   | 1 of 1, cached: 1 ✔
+[f6/cc0107] say_hello (1)       | 3 of 3, cached: 3 ✔
+[2c/67a06b] convert_to_upper (3) | 3 of 3, cached: 3 ✔
+[1a/bc5901] collect_greetings   | 1 of 1, cached: 1 ✔
 [b2/488871] cowpy             | 0 of 1
 There were 3 greetings in this batch
 ERROR ~ Error executing process > 'cowpy'
@@ -463,9 +463,9 @@ This time it does indeed work.
 Launching `hello-containers.nf` [elegant_brattain] DSL2 - revision: 028a841db1
 
 executor >  local (1)
-[95/fa0bac] sayHello (3)       | 3 of 3, cached: 3 ✔
-[92/32533f] convertToUpper (3) | 3 of 3, cached: 3 ✔
-[aa/e697a2] collectGreetings   | 1 of 1, cached: 1 ✔
+[95/fa0bac] say_hello (3)       | 3 of 3, cached: 3 ✔
+[92/32533f] convert_to_upper (3) | 3 of 3, cached: 3 ✔
+[aa/e697a2] collect_greetings   | 1 of 1, cached: 1 ✔
 [7f/caf718] cowpy              | 1 of 1 ✔
 There were 3 greetings in this batch
 ```
@@ -505,26 +505,23 @@ less results/cowpy-COLLECTED-test-batch-output.txt
 ```
 You see that the character is saying all the greetings, just as it did when we ran the `cowpy` command on the `greetings.csv` file from inside the container.
 
-2.3.4. Inspect how Nextflow launched the containerized task
+#### 3.4. Inspect how Nextflow launched the containerized task
 
-Let's take a look at the work subdirectory for one of the cowpy process calls to get a bit more insight on how Nextflow works with containers under the hood.
+Let's take a look at the work subdirectory for one of the `cowpy` process calls to get a bit more insight on how Nextflow works with containers under the hood.
 
-Check the output from your nextflow run command to find the call ID for the cowpy process. Then navigate to the work subdirectory. In it, you will find the .command.run file that contains all the commands Nextflow ran on your behalf in the course of executing the pipeline.
+Check the output from your `nextflow run` command to find the call ID for the `cowpy` process. Then navigate to the work subdirectory. 
+In it, you will find the `.command.run` file that contains all the commands Nextflow ran on your behalf in the course of executing the pipeline.
 
-Open the .command.run file and search for nxf_launch; you should see something like this:
+Open the `.command.run` file and search for nxf_launch; you should see something like this:
 
-
+```nextflow
 nxf_launch() {
     docker run -i --cpu-shares 1024 -e "NXF_TASK_WORKDIR" -v /workspaces/training/hello-nextflow/work:/workspaces/training/hello-nextflow/work -w "$NXF_TASK_WORKDIR" --name $NXF_BOXID community.wave.seqera.io/library/pip_cowpy:131d6a1b707a8e65 /bin/bash -ue /workspaces/training/hello-nextflow/work/7f/caf7189fca6c56ba627b75749edcb3/.command.sh
 }
-As you can see, Nextflow is using the docker run command to launch the process call. It also mounts the corresponding work subdirectory into the container, sets the working directory inside the container accordingly, and runs our templated bash script in the .command.sh file.
+```
+As you can see, Nextflow is using the `docker run` command to launch the process call. It also mounts the corresponding work subdirectory into the container, sets the working directory inside the container accordingly, and runs our templated bash script in the `.command.sh` file.
 
-All the hard work we had to do manually in the previous section is done for us by Nextflow!
+You now know how to use containers in Nextflow to run processes.
 
-Takeaway¶
-
-You know how to use containers in Nextflow to run processes.
-
-What's next?¶
-
-Take a break! When you're ready, move on to Part 6 to learn how to configure the execution of your pipeline to fit your infrastructure as well as manage configuration of inputs and parameters. It's the very last part and then you're done!
+In next chapter we will learn how to configure the execution of your pipeline to fit your infrastructure as well as manage configuration of inputs and parameters. 
+It's the very last part and then you're done!
