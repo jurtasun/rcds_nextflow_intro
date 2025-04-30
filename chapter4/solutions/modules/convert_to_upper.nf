@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Use a text replacement tool to convert the greeting to uppercase
-process convertToUpper {
+process convert_to_upper {
 
     publishDir 'results', mode: 'copy'
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Use a text replacement tool to convert the greeting to uppercase
-process convertToUpper {
+process convert_to_upper {
 
     publishDir 'results', mode: 'copy'
 
@@ -19,7 +19,7 @@ process convertToUpper {
 }
 
 // Collect uppercase greetings into a single output file
-process collectGreetings {
+process collect_greetings {
 
     publishDir 'results', mode: 'copy'
 
@@ -44,7 +44,7 @@ params.greeting = 'greetings.csv'
 params.batch = 'test-batch'
 
 // Include modules
-include { sayHello } from './modules/sayHello.nf'
+include { say_hello } from './modules/say_hello.nf'
 
 // Workflow
 workflow {
@@ -55,15 +55,15 @@ workflow {
                         .map { line -> line[0] }
 
     // emit a greeting
-    sayHello(greeting_ch)
+    say_hello(greeting_ch)
 
     // convert the greeting to uppercase
-    convertToUpper(sayHello.out)
+    convert_to_upper(say_hello.out)
 
     // collect all the greetings into one file
-    collectGreetings(convertToUpper.out.collect(), params.batch)
+    collect_greetings(convert_to_upper.out.collect(), params.batch)
 
     // emit a message about the size of the batch
-    collectGreetings.out.count.view { "There were $it greetings in this batch" }
+    collect_greetings.out.count.view { "There were $it greetings in this batch" }
 
 }

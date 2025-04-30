@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Collect uppercase greetings into a single output file
-process collectGreetings {
+process collect_greetings {
 
     publishDir 'results', mode: 'copy'
 
