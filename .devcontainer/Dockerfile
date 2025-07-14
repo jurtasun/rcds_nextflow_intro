@@ -5,6 +5,7 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu
 RUN apt-get update && apt-get install -y \
     openjdk-11-jre \
     curl \
+    groovy \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Nextflow
