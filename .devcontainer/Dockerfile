@@ -15,4 +15,4 @@ RUN curl -s https://get.nextflow.io | bash \
     && chown vscode:vscode /usr/local/bin/nextflow
 
 # Verify installation
-RUN groovy --version && nextflow -version
+RUN nextflow -version
