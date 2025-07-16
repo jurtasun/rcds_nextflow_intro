@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    openjdk-11-jre \
+    openjdk-17-jre \
     curl \
     groovy \
     && rm -rf /var/lib/apt/lists/*

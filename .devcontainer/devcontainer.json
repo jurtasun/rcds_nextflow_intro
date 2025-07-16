@@ -15,7 +15,8 @@
         "ms-toolsai.jupyter",
         "github.copilot",
         "github.copilot-chat",
-        "nvuillam.vscode-groovy-lint"
+        "nvuillam.vscode-groovy-lint",
+        "nextflow.nextflow"
       ]
     }
   }
