@@ -1,4 +1,4 @@
-# Use an Ubuntu base image
+# Use official devcontainer base image (Ubuntu)
 FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
 # Install dependencies
@@ -15,4 +15,4 @@ RUN curl -s https://get.nextflow.io | bash \
     && chown vscode:vscode /usr/local/bin/nextflow
 
 # Verify installation
-RUN nextflow -version
+RUN groovy --version && nextflow -version
